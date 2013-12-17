@@ -27,12 +27,14 @@ $(function(){
             var data = {f:[]};
 
             for(var i= 0; i< e.changedTouches.length; i++){
+                var y = (e.touches[i].clientY / window.innerHeight);
+                var x = (e.touches[i].clientX /  window.innerWidth);
                 data.f.push({
-                    'y':(e.touches[i].clientY/  window.innerHeight).substring(0,4),
-                    'x':(e.touches[i].clientX/  window.innerWidth).substring(0,4),
+                    'y': y.toFixed(2),
+                    'x': x.toFixed(2),
                     'c':[ $("#color").spectrum("get").toRgb(),
-                               $("#color2").spectrum("get").toRgb()
-                            ]
+                          $("#color2").spectrum("get").toRgb()
+                        ]
                 });
             }
             socket.emit('m', data);          
@@ -45,8 +47,8 @@ $(function(){
 
             for(var i= 0; i< e.changedTouches.length; i++){
                 data.f.push({
-                    'y':(e.changedTouches[i].clientY/  window.innerHeight),
-                    'x':(e.changedTouches[i].clientX/  window.innerWidth),
+                    'y':(e.changedTouches[i].clientY / window.innerHeight).toFixed(2),
+                    'x':(e.changedTouches[i].clientX / window.innerWidth).toFixed(2),
                     'c':[ $("#color").spectrum("get").toRgb(),
                                $("#color2").spectrum("get").toRgb()
                             ],
