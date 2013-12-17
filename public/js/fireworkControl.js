@@ -23,12 +23,11 @@ $(function(){
 
             for(var i= 0; i< e.changedTouches.length; i++){
                 data.f.push({
-                    'y':(e.touches[i].clientY/  window.innerHeight),
-                    'x':(e.touches[i].clientX/  window.innerWidth),
+                    'y':(e.touches[i].clientY/  window.innerHeight).substring(0,4),
+                    'x':(e.touches[i].clientX/  window.innerWidth).substring(0,4),
                     'colors':[ $("#color").spectrum("get").toRgb(),
                                $("#color2").spectrum("get").toRgb()
-                            ],
-                    'bang': $('#bang').val()/10
+                            ]
                 });
             }
             socket.emit('m', data);  
@@ -44,12 +43,11 @@ $(function(){
 
             for(var i= 0; i< e.changedTouches.length; i++){
                 data.f.push({
-                    'y':(e.touches[i].clientY/  window.innerHeight),
-                    'x':(e.touches[i].clientX/  window.innerWidth),
-                    'colors':[ $("#color").spectrum("get").toRgb(),
+                    'y':(e.touches[i].clientY/  window.innerHeight).substring(0,4),
+                    'x':(e.touches[i].clientX/  window.innerWidth).substring(0,4),
+                    'c':[ $("#color").spectrum("get").toRgb(),
                                $("#color2").spectrum("get").toRgb()
-                            ],
-                    'bang': $('#bang').val()/10
+                            ]
                 });
             }
             socket.emit('m', data);          

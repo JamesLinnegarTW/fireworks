@@ -65,10 +65,8 @@
 		var ctx = canvas.getContext("2d");
 		var imageObj = new Image();
 		var lastRender = new Date();
-
-		var t = document.getElementById('text');
 		
-	    imageObj.src = './img/ThoughtWorks-logo.png';
+	    imageObj.src = './ThoughtWorks-logo.png';
 	
 		var W = window.innerWidth, H = window.innerHeight;
 
@@ -278,7 +276,7 @@
 					var y = window.innerHeight * data.f[f].y;
 
 					for(i = 0; i < data.f[f].colors.length; i++){
-						trails.push(new Trail(x, y, data.f[f].colors[i]));			
+						trails.push(new Trail(x, y, data.f[f].c[i]));			
 					}
 				}
 
@@ -294,7 +292,7 @@
 					var bang = (data.f[f].bang * (W * 0.02)) + 5;
 					
 					for(i = 0; i < data.f[f].colors.length; i++){
-						fireworks.push(new Firework(x, y, bang, data.f[f].colors[i]));
+						fireworks.push(new Firework(x, y, bang, data.f[f].c[i]));
 					}
 				}
 
