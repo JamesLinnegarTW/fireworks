@@ -1,63 +1,63 @@
 // Client
 $(function(){
-    
+    $("#color").spectrum({
+        color: "#f00"
+    });
+
+    $("#color2").spectrum({
+        color: "#f00"
+    });
+
     var socket = io.connect(
         'http://'+window.location.hostname+':9000/'
     );
 
     socket.on('connect', function () {
-    
-        var x, y;
+        var x, y, direction = {x:0,y:0};
+        var drawable = document.getElementById('draw');
 
-        var color = {
-                r : Math.round(Math.random()*255),
-                g : Math.round(Math.random()*255),
-                b : Math.round(Math.random()*255)
-            };
+        drawable.addEventListener('touchstart', function (e) {   
 
-
-        document.addEventListener('touchstart', function (e) {   
-            
-            color = {
-                r : Math.round(Math.random()*255),
-                g : Math.round(Math.random()*255),
-                b : Math.round(Math.random()*255)
-            };
+            e.preventDefault(); 
+            for(var i = 0; i < e.touches.length; i++){
+                socket.emit('move', {
+                    'y':e.touches[i].clientY / window.innerHeight,
+                    'x':e.touches[i].clientX /  window.innerWidth,
+                    'colors':[ $("#color").spectrum("get").toRgb(),
+                               $("#color2").spectrum("get").toRgb() ]
+                });
+            }
 
         }, false);
 
-        document.addEventListener('touchmove', function (e) { 	
-			
-			y = e.touches[0].clientY / window.innerHeight;
-			x = e.touches[0].clientX /  window.innerWidth;
-
+        drawable.addEventListener('touchmove', function (e) { 	
 
 			e.preventDefault(); 
-
-			socket.emit('move', {
-                'y':y,
-                'x':x,
-                'color':color
-            });
-            
+            for(var i = 0; i < e.touches.length; i++){
+    			socket.emit('move', {
+                    'y':e.touches[i].clientY / window.innerHeight,
+                    'x':e.touches[i].clientX /  window.innerWidth,
+                    'colors':[ $("#color").spectrum("get").toRgb(),
+                               $("#color2").spectrum("get").toRgb() ]
+                });
+            }            
 
 		}, false);
 
 
         document.addEventListener('touchend', function (e) {  
-
-            socket.emit('bang', {
-                'y':y,
-                'x':x,
-                'color':color
-            });
-
+            for(var i= 0; i< e.changedTouches.length; i++){
+                socket.emit('bang', {
+                    'y':(e.changedTouches[i].clientY/  window.innerHeight),
+                    'x':(e.changedTouches[i].clientX/  window.innerWidth),
+                    'colors':[ $("#color").spectrum("get").toRgb(),
+                               $("#color2").spectrum("get").toRgb()
+                            ],
+                    'bang': $('#bang').val()/10
+                });
+            }
         }, false);        
-  
-   
-        socket.emit('join-control', {
-            controller_id: 'hello'
-        });   
+    
 
 	});
 

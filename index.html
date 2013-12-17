@@ -6,6 +6,7 @@
   <meta name="description" content="Controller for the HackManchester AWIN">
   <meta name="author" content="A-Team">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="spectrum.css">
   <!-- Phone specific stuff -->
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=0" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
@@ -17,8 +18,40 @@
   <script type="text/javascript" src="js/jquery.min.js"></script>
   <script src='js/socket.io.js'></script>  
   <script src='js/pongcontrol.js'></script>
+  <script src='spectrum.js'></script>
+
+  <style type="text/css">
+      #draw {
+        position:fixed;
+        top:0;
+        right:0;
+        bottom:50px;
+        left:0;
+        background-color:black;
+        background-image:url(ThoughtWorks-logo.png);
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
+      #footer {
+        position:fixed;
+        bottom:0;
+        left:0;
+        right:0;
+        background-color:black;
+        padding:10px;
+        height:50px;
+      }
+  </style>
 </head>
 <body>
-	<h1 style="font-size:30px; line-height:40px; margin-top:-20px; padding-top:50%; text-align:center;">Touch Me</h1>
+  <div id="draw"></div>
+  <div id="footer">
+    <input type='color' name='color' id='color' />
+    <input type='color' name='color' id='color2' />
+
+    <input type="range" name="bang" id="bang" min="1" max="10">
+
+  </div>
 </body>
 </html>

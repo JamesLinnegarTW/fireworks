@@ -26,39 +26,24 @@
 	//Lets create some particles now
 	var particle_count = 30;
 
-	var socket = io.connect(
-	    'http://'+window.location.hostname+':9000/'
-	);
-				
-
-	socket.on('move', function(data) {
-		mouse.x = window.innerWidth * data.x;
-		mouse.y = window.innerHeight * data.y;
-	});
-
 
 	window.onload = function(){
 
 		for(var i = 0; i < particle_count; i++)
 		{
-			particles.push(new particle());
+			particles.push(new particle(W/2, H/2));
 		}
 				
 		
-		function particle()
+		function particle(x,y)
 		{
 
 			this.speed = {x: -2.5+Math.random()*5, y: -15+Math.random()*10};
 			//location = mouse coordinates
 			//Now the flame follows the mouse coordinates
-			if(mouse.x && mouse.y)
-			{
-				this.location = {x: mouse.x, y: mouse.y};
-			}
-			else
-			{
-				this.location = {x: W/2, y: H/2};
-			}
+
+			this.location = {x: x, y: y};
+	
 			//radius range = 10-30
 			this.radius = 5+Math.random()*20;
 			//life range = 20-30
@@ -103,7 +88,7 @@
 				if(p.remaining_life < 0 || p.radius < 0)
 				{
 					//a brand new particle replacing the dead one
-					particles[i] = new particle();
+					particles[i] = new particle(W/2, H/2);
 				}
 			}
 		}

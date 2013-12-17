@@ -34,7 +34,6 @@
 
 
 	(function() {
-		var GRAVITY = -2;
 	    var lastTime = 0;
 	    var vendors = ['ms', 'moz', 'webkit', 'o'];
 	    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
@@ -65,11 +64,12 @@
 		var ctx = canvas.getContext("2d");
 		var imageObj = new Image();
 		var lastRender = new Date();
-
+		var ball;
 		var t = document.getElementById('text');
 		
 	    imageObj.src = './ThoughtWorks-logo.png';
-	
+
+
 		var W = window.innerWidth, H = window.innerHeight;
 
 		canvas.width = W;
@@ -88,7 +88,32 @@
 		var trails = [];
 		var particle_count = W  * 0.25;
 
-		function Firework(x, y, bang, color ){
+		function Ball(x, y, color){
+			var particles = [];
+
+			var particleSize = Math.round(Math.random()*5) + 5;
+			
+			var direction = (Math.random() / 2);
+			this.color = color;
+
+			if(Math.floor((Math.random()*2)-1) == 0){
+				direction = -direction;
+			}
+			
+			for(var i = particles.length; i < Math.random() * particle_count + 20; i++) {	
+				particles.push(new Particle(x, y, color, particleSize, 10, 0, this.color));
+			}
+		
+			this.draw = function(ctx){
+				for(var i = 0; i < particles.length; i++){
+					if(!particles[i].draw(ctx)){
+						particles[i] = new Particle(x, y, color, particleSize, 2, 0, this.color);
+					}
+				}
+			};
+		}
+
+		function Firework(x, y, bang, color){
 			var particles = [];
 
 			var particleSize = Math.round(Math.random()*15) + 5;
@@ -147,7 +172,7 @@
 			var startTime = new Date();
 			var speed = {x: (-distance+Math.random()*(2 * distance)), 
 						 y: (-distance+Math.random()*(2 * distance) - (distance/2)) };
-					
+		
 			var location = {x: x, y: y};
 		
 			var radius = 10+Math.random()*(particleSize);
@@ -209,6 +234,7 @@
 		}
 		
 		function resetCanvas(rCtx){
+		
 			rCtx.fillStyle = "black";
 			rCtx.fillRect(0, 0, W, H);
 		}
@@ -247,7 +273,7 @@
 						}
 					}
 				}
-
+			ball.draw(tmpCtx);
 			tmpCtx.globalCompositeOperation="source-over";
 		    tmpCtx.drawImage(imageObj, (W/2) - (250/2), (H/2) - (75 / 2));
 		
@@ -257,43 +283,15 @@
 			requestAnimationFrame(draw, canvas);
 		}
 	
+		ball = new Ball(W/2,H/2,{r:255,g:200,b:255});
 
 		requestAnimationFrame(draw, canvas);
-
-
-		var socket = io.connect(
-			'http://'+window.location.hostname+':9000/'
-		);
-
-		socket.on('connect', function () {
-	    	socket.emit('viewRegister', {});
-		});
 		
-		socket.on('move', function(data) {
-			var x = window.innerWidth * data.x;
-			var y = window.innerHeight * data.y;
-			
-			if(trails.length < 500){
-				for(i = 0; i < data.colors.length; i++){
-					trails.push(new Trail(x, y, data.colors[i]));			
-				}
-			}
-		});
-
-		socket.on('bang', function(data) {
-			var x = window.innerWidth * data.x;
-			var y = window.innerHeight * data.y;
-			var bang = (data.bang * (W * 0.02)) + 5;
-
-			if(fireworks.length < (W * 0.03)){
-				for(i = 0; i < data.colors.length; i++){
-					fireworks.push(new Firework(x, y, bang, data.colors[i]));
-				}
-			}
-		});
 
 	})();
 
+
+	
 	</script>
 	</body>
 </html>
