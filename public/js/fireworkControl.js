@@ -25,20 +25,20 @@ $(function(){
 			e.preventDefault(); 
 
             var data = {f:[]};
-            if(new Date() % 2 == 0){
-                for(var i= 0; i< e.changedTouches.length; i++){
-                    var y = (e.touches[i].clientY / window.innerHeight);
-                    var x = (e.touches[i].clientX /  window.innerWidth);
-                    data.f.push({
-                        'y': y.toFixed(2),
-                        'x': x.toFixed(2),
-                        'c':[ $("#color").spectrum("get").toRgb(),
-                              $("#color2").spectrum("get").toRgb()
-                            ]
-                    });
-                }
-                socket.emit('m', data);          
+
+            for(var i= 0; i< e.changedTouches.length; i++){
+                var y = (e.touches[i].clientY / window.innerHeight);
+                var x = (e.touches[i].clientX /  window.innerWidth);
+                data.f.push({
+                    'y': y.toFixed(2),
+                    'x': x.toFixed(2),
+                    'c':[ $("#color").spectrum("get").toRgb(),
+                          $("#color2").spectrum("get").toRgb()
+                        ]
+                });
             }
+            socket.emit('m', data);          
+
 		}, false);
 
 
