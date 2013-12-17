@@ -275,7 +275,7 @@
 					var x = window.innerWidth * data.f[f].x;
 					var y = window.innerHeight * data.f[f].y;
 
-					for(i = 0; i < data.f[f].colors.length; i++){
+					for(i = 0; i < data.f[f].c.length; i++){
 						trails.push(new Trail(x, y, data.f[f].c[i]));			
 					}
 				}
@@ -291,7 +291,7 @@
 					var y = window.innerHeight * data.f[f].y;
 					var bang = (data.f[f].bang * (W * 0.02)) + 5;
 					
-					for(i = 0; i < data.f[f].colors.length; i++){
+					for(i = 0; i < data.f[f].c.length; i++){
 						fireworks.push(new Firework(x, y, bang, data.f[f].c[i]));
 					}
 				}
