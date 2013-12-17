@@ -1,4 +1,4 @@
-var io = require('socket.io').listen(9000);
+var io = require('socket.io').listen(process.env.PORT || 8080);
 var clients = [];
 var static = require('node-static');
 var file = new static.Server('./public');
