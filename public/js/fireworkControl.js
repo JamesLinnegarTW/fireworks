@@ -25,7 +25,7 @@ $(function(){
 			e.preventDefault(); 
 
             var data = {f:[]};
-            if(new Date() % 5 == 0){
+            if(new Date() % 2 == 0){
                 for(var i= 0; i< e.changedTouches.length; i++){
                     var y = (e.touches[i].clientY / window.innerHeight);
                     var x = (e.touches[i].clientX /  window.innerWidth);
