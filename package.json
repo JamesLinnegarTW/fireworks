@@ -12,5 +12,9 @@
     "start": "node server.js"
   },
   "author": "",
-  "license": "BSD-2-Clause"
+  "license": "BSD-2-Clause",
+  "subdomain": "jlinnega-fireworks",
+  "engines": {
+    "node": "0.10.x"
+  }
 }
