@@ -17,27 +17,12 @@ $(function(){
         var drawable = document.getElementById('draw');
 
         drawable.addEventListener('touchstart', function (e) {   
-
             e.preventDefault(); 
-            var data = {f:[]};
-
-            for(var i= 0; i< e.changedTouches.length; i++){
-                data.f.push({
-                    'y':(e.touches[i].clientY/  window.innerHeight).substring(0,4),
-                    'x':(e.touches[i].clientX/  window.innerWidth).substring(0,4),
-                    'colors':[ $("#color").spectrum("get").toRgb(),
-                               $("#color2").spectrum("get").toRgb()
-                            ]
-                });
-            }
-            socket.emit('m', data);  
-
         }, false);
 
         drawable.addEventListener('touchmove', function (e) { 	
 
 			e.preventDefault(); 
-
 
             var data = {f:[]};
 
@@ -62,7 +47,7 @@ $(function(){
                 data.f.push({
                     'y':(e.changedTouches[i].clientY/  window.innerHeight),
                     'x':(e.changedTouches[i].clientX/  window.innerWidth),
-                    'colors':[ $("#color").spectrum("get").toRgb(),
+                    'c':[ $("#color").spectrum("get").toRgb(),
                                $("#color2").spectrum("get").toRgb()
                             ],
                     'bang': $('#bang').val()/10
