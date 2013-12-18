@@ -147,6 +147,7 @@
 			this.y = y;
 			this.side = side;
 			this.color = color;
+
 			this.setY = function(y){
 				this.y = y;
 			}
@@ -157,10 +158,10 @@
 				} else {
 					ctx.fillStyle = "red";	
 				}
-				if(side == 0){
-					ctx.fillRect(0, (H * this.y) - ((H * 0.1)/2), 10,H * 0.1);
+				if(this.side == 0){
+					ctx.fillRect(0,    (H * this.y) - ((H * 0.1)/2), 10, H * 0.1);
 				} else {
-					ctx.fillRect(W-10, (H * this.y) - ((H * 0.1)/2), 10,H * 0.1);
+					ctx.fillRect(W-10, (H * this.y) - ((H * 0.1)/2), 10, H * 0.1);
 				}
 			}
 		}
@@ -316,11 +317,15 @@
 		});
 		
 		socket.on('newUser', function(data){
+			console.log('new user', data);
 			paddles[data.u] = new Paddle(0.5, data.side, data.color);
+			console.log(paddles);
 		});
 		
-		socket.on('allUsers', function(data){
-			paddles = [];
+		socket.on('reload', function(data){
+
+			paddles = {};
+			console.log('reload', data);
 			for(var i = 0; i < data.length; i++){
 				paddles[data[i].u] = new Paddle(0.5, data[i].side, data[i].color);
 			}
@@ -333,6 +338,7 @@
 		});
 
 		socket.on('removeUser', function(data){
+			console.log('removeUser', data);
 			delete paddles[data.u];
 		});
 

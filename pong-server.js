@@ -15,13 +15,13 @@ includeInThisContext('./public/js/underscore.js');
 
 var clients = [];
 var paddles = [];
-var users = [];
+
 
 var static = require('node-static');
 var file = new static.Server('./public');
 var ball = {x: 0.5,y:0.0};
-var speedY = 0.005;
-var speedX = -0.005;
+var speedY = 0.010;
+var speedX = -0.010;
 
 require('http').createServer(function (request, response) {
     request.addListener('end', function () {
@@ -37,15 +37,34 @@ function randomColor(){
     }
 }
 io.sockets.on('connection', function (socket) {
+    console.log("hello");
     clients.push(socket);
 
+    function reloadEverything(){
+        var k = Object.keys(paddles);
+        var temp = [];
+        for(var i = 0; i < k.length; i++){
+            temp.push(paddles[k[i]]);
+        }
+
+        for(var i= 0; i < clients.length; i++) {
+            clients[i].emit('reload', temp); //reload everything?
+        }
+
+    }
     
+    reloadEverything();
 
     socket.on('user', function(){
-        users.push(socket);
+        console.log('new user');
+
         var color = randomColor();
-        socket.emit('color',color)
-        paddles[socket.id] = {u: new Date(), y:0.5, side: ((users.length-1) % 2), color:color};
+        socket.emit('color',color);
+        console.log(paddles);
+        var newPaddle = {u: new Date(), y:0.5, side: ((Object.keys(paddles).length) % 2), color:color};
+        console.log(newPaddle);
+        paddles[socket.id] = newPaddle;
+
         for(var i= 0; i < clients.length; i++) {
             clients[i].emit('newUser', paddles[socket.id]);
         }
@@ -63,29 +82,21 @@ io.sockets.on('connection', function (socket) {
     });
     
     socket.on('disconnect', function(){
+        console.log('byeeee');
+
         for(var i= 0; i < clients.length; i++) {
             if(clients[i].id == socket.id){
                 clients.splice(i,1);
                 break;                
             }
         }
-        for(var i= 0; i < users.length; i++) {
-            if(users[i].id == socket.id){
-                users.splice(i,1);
-                var paddle = paddles[socket.id];
 
-                for(var i= 0; i < clients.length; i++) {
-                    clients[i].emit('removeUser', paddle);
-                }
+        if(paddles[socket.id]) delete paddles[socket.id];
+        
+        reloadEverything();
 
-                break;                
-            }
-        }
     });
 
-    function updateUserList(){
-        socket.emit.broadcast('updateUsers', users);
-    }
 
 });
 
@@ -121,7 +132,7 @@ setInterval(function(){
         var collision = collisionDetect(0);
 
         if(collision){
-            speedX = (-speedX) + 0.001;
+            speedX = (-speedX) + 0.005;
             for(var i= 0; i < clients.length; i++) {
                 clients[i].emit('c', collision);
             }  
@@ -131,7 +142,7 @@ setInterval(function(){
                 clients[i].emit('b', {x:ball.x, y:ball.y});
             }
 
-            speedX = 0.001;
+            speedX = 0.010;
             
             if(Math.random() > 0.5) speedX = -speedX;
 
@@ -155,7 +166,7 @@ setInterval(function(){
             for(var i= 0; i < clients.length; i++) {
                 clients[i].emit('b', {x:ball.x, y:ball.y});
             }
-            speedX = -0.001;
+            speedX = -0.010;
             ball.x = 0.5;
             ball.y = Math.random();
         }
