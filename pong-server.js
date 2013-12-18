@@ -21,7 +21,7 @@ var static = require('node-static');
 var file = new static.Server('./public');
 var ball = {x: 0.5,y:0.0};
 var speedY = 0.005;
-var speedX = -0.005;
+var speedX = 0.005;
 
 require('http').createServer(function (request, response) {
     request.addListener('end', function () {
@@ -65,9 +65,7 @@ io.sockets.on('connection', function (socket) {
 
         var color = randomColor();
         socket.emit('color',color);
-        console.log(paddles);
         var newPaddle = {u: new Date(), y:0.5, side: (noOfPlayers() % 2), color:color};
-        console.log(newPaddle);
         paddles[socket.id] = newPaddle;
 
         for(var i= 0; i < clients.length; i++) {
@@ -127,7 +125,7 @@ function collisionDetect(side){
 }
 
 function resetBall(){
-    speedX = 0.001;
+    speedX = 0.005;
 
     ball.x = 0.5;
     ball.y = Math.random();
@@ -173,7 +171,7 @@ setInterval(function(){
 
             if(collision){
                 speedX = (-speedX) + 0.001;
-                ball.x = 1 - 0.001;
+                ball.x = 1 - 0.005;
                 for(var i= 0; i < clients.length; i++) {
                     clients[i].emit('c', collision);
                 }  
