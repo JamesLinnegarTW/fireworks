@@ -1,5 +1,6 @@
 // Client
 $(function(){
+        var paddle = $('#paddle');
         var socket = io.connect(
             'http://'+window.location.hostname+':9000/'
         );
@@ -20,6 +21,7 @@ $(function(){
 
                 var y = (e.touches[0].clientY / window.innerHeight);
                 data.y = y;
+                paddle.css('top', (y * 100) + '%');
                 socket.emit('moveUser', data);          
 
     		}, false);

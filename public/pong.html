@@ -288,6 +288,7 @@
 		
 		    tmpCtx.fillStyle = "white";
 			tmpCtx.font="20px Georgia";
+			tmpCtx.textAlign = 'center'
 			tmpCtx.fillText(score[0] + ':' + score[1],(W/2),50);
 
 			ctx.drawImage(tmpCanvas, 0, 0);
@@ -335,7 +336,8 @@
 
 			paddles = {};
 			console.log('reload', data);
-			for(var i = 0; i < data.length; i++){
+			score  = data.score;
+			for(var i = 0; i < data.p.length; i++){
 				paddles[data[i].u] = new Paddle(0.5, data[i].side, data[i].color);
 			}
 		});

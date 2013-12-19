@@ -47,11 +47,12 @@ io.sockets.on('connection', function (socket) {
 
     function reloadEverything(){
         var k = Object.keys(paddles);
-        var temp = [];
+        var temp = {};
+        temp.p = [];
         for(var i = 0; i < k.length; i++){
-            temp.push(paddles[k[i]]);
+            temp.p.push(paddles[k[i]]);
         }
-
+        temp.score = score;
         for(var i= 0; i < clients.length; i++) {
             clients[i].emit('reload', temp); //reload everything?
         }
