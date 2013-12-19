@@ -15,7 +15,7 @@ includeInThisContext('./public/js/underscore.js');
 
 var clients = [];
 var paddles = [];
-
+var score = [0,0];
 
 var static = require('node-static');
 var file = new static.Server('./public');
@@ -151,13 +151,15 @@ setInterval(function(){
             if(collision){
                 speedX = (-speedX) + 0.001;
                 ball.x = 0.001;
+  
+                
                 for(var i= 0; i < clients.length; i++) {
                     clients[i].emit('c', collision);
                 }  
             } else {
-                           
+                score[1]++;             
                 for(var i= 0; i < clients.length; i++) {
-                    clients[i].emit('b', {x:ball.x, y:ball.y});
+                    clients[i].emit('b', {x:ball.x, y:ball.y, score:score});
                 }
 
                 resetBall();
@@ -172,13 +174,14 @@ setInterval(function(){
             if(collision){
                 speedX = (-speedX) + 0.001;
                 ball.x = 1 - 0.005;
+
                 for(var i= 0; i < clients.length; i++) {
                     clients[i].emit('c', collision);
                 }  
             } else {
-                           
+                score[0]++;           
                 for(var i= 0; i < clients.length; i++) {
-                    clients[i].emit('b', {x:ball.x, y:ball.y});
+                    clients[i].emit('b', {x:ball.x, y:ball.y, score : score});
                 }
                 speedX = -0.010;
                 ball.x = 0.5;

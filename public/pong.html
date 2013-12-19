@@ -69,10 +69,13 @@
 		var lastRender = new Date();
 		var color = {r:255,g:0,b:0};
 	    var paddles = {};
+	    var score = [0,0];
+	    var W = window.innerWidth, H = window.innerHeight;
+
+
 	    imageObj.src = './img/ThoughtWorks-logo.png';
 	
-		var W = window.innerWidth, H = window.innerHeight;
-
+		
 		canvas.width = W;
 		canvas.height = H;
 	
@@ -283,6 +286,10 @@
 			tmpCtx.globalCompositeOperation="source-over";
 		    tmpCtx.drawImage(imageObj, (W/2) - (250/2), (H/2) - (75 / 2));
 		
+		    tmpCtx.fillStyle = "white";
+			tmpCtx.font="20px Georgia";
+			tmpCtx.fillText(score[0] + ':' + score[1],(W/2),50);
+
 			ctx.drawImage(tmpCanvas, 0, 0);
 			lastRender = new Date();
 			
@@ -313,6 +320,8 @@
 
 		socket.on('b', function(data) {
 			var bang = (2 * (W * 0.02)) + 5;
+			
+			score = data.score;
 			fireworks.push(new Firework((data.x * W), (data.y * H), bang,  color ));
 		});
 		
