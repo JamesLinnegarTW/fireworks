@@ -8,7 +8,7 @@ require('http').createServer(function (request, response) {
     request.addListener('end', function () {
         file.serve(request, response);
     }).resume();
-}).listen(8081);
+}).listen(80);
 
 
 io.sockets.on('connection', function (socket) {
