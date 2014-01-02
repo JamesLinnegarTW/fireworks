@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Fireworks</title>
+  <meta name="description" content="Controller for the HackManchester AWIN">
+  <meta name="author" content="A-Team">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/spectrum.css">
+  <!-- Phone specific stuff -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=0" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta names="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+ 
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <script type="text/javascript" src="js/jquery.min.js"></script>  
+  <script type="text/javascript">
+    $(function(){
+          var color = document.getElementById('color');
+          var r = document.getElementById('r');
+          var g = document.getElementById('g');
+          var b = document.getElementById('b');
+          var colorR = "00";
+          var colorG = "00";
+          var colorB = "00";
+
+          var rBar = document.getElementById('rBar');         
+          var gBar = document.getElementById('gBar');
+          var bBar = document.getElementById('bBar');
+          
+          color.addEventListener('touchstart', function (e) {   
+              e.preventDefault(); 
+          }, false);
+
+
+          r.addEventListener('touchmove', function (e) {   
+              var y = (e.touches[0].clientY / window.innerHeight);
+              var hex = Math.floor(y*255).toString(16);
+              if(hex.length < 2) hex = "0" + hex;
+              colorR = hex; 
+              e.preventDefault(); 
+              setBackground();
+              rBar.style.top = ((y * window.innerHeight) - 10) + "px";
+          }, false);
+
+          g.addEventListener('touchmove', function (e) {   
+              var y = (e.touches[0].clientY / window.innerHeight);
+              var hex = Math.floor(y*255).toString(16);
+              if(hex.length < 2) hex = "0" + hex;
+              colorG = hex; 
+              e.preventDefault(); 
+              setBackground();
+              gBar.style.top = ((y * window.innerHeight) - 10) + "px";   
+          }, false);
+
+          b.addEventListener('touchmove', function (e) {   
+              var y = (e.touches[0].clientY / window.innerHeight);
+              var hex = Math.floor(y*255).toString(16);
+              if(hex.length < 2) hex = "0" + hex;
+              colorB = hex; 
+              e.preventDefault(); 
+              setBackground();
+              bBar.style.top = ((y * window.innerHeight) - 10) + "px";   
+          }, false);
+
+          function setBackground(){
+            color.style.backgroundColor = "#"+colorR+colorG+colorB;
+          }
+          setBackground();
+    });
+  </script>
+  <style>
+  #color {
+    position:fixed;
+    left:0;
+    top:0;
+    right:0;
+    bottom:0;
+  }
+
+  #r, #rBar {
+    position:fixed;
+    left:0;
+    top:0;
+    right:66%;
+    bottom:0;
+  }
+
+  #g, #gBar {
+    position:fixed;
+    left:33%;
+    top:0;
+    right:33%;
+    bottom:0;
+  }
+
+  #b, #bBar {
+    position:fixed;
+    left:66%;
+    top:0;
+    right:0;
+    bottom:0;
+  }
+  
+  #rBar, #gBar, #bBar {
+    height:20px;
+    background-color:black;
+    bottom:auto;
+  }
+
+  span {
+  
+  
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+
+  /* No support for these yet, use at own risk */
+  -o-user-select: none;
+  user-select: none;          
+    width:33%;
+    height:100%;
+
+   }
+   </style>
+</head>
+<body>
+  <div id="color">
+    <span id="r"><div id="rBar"></div></span>
+    <span id="g"><div id="gBar"></div></span>  
+    <span id="b"><div id="bBar"></div></span>  
+
+  </div>
+</body>
+</html>
