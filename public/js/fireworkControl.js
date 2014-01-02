@@ -1,12 +1,14 @@
 // Client
-$(function(){
-    $("#color").spectrum({
-        color: "#f00"
-    });
 
-    $("#color2").spectrum({
-        color: "#f00"
-    });
+function randomColor(){
+    return {
+        r: Math.round((Math.random() * 255)),
+        g: Math.round((Math.random() * 255)),
+        b: Math.round((Math.random() * 255))
+    }
+}
+
+$(function(){
 
     var socket = io.connect(
         'http://'+window.location.hostname+':9000/'
@@ -32,10 +34,12 @@ $(function(){
                 data.f.push({
                     'y': y.toFixed(2),
                     'x': x.toFixed(2),
-                    'c':[ $("#color").spectrum("get").toRgb(),
-                          $("#color2").spectrum("get").toRgb()
+                    'c':[ randomColor(),
+                          randomColor()
                         ]
                 });
+
+                window.trails.push(new Trail(e.touches[i].clientX, e.touches[i].clientY, randomColor()));
             }
             socket.emit('m', data);          
 
@@ -49,11 +53,13 @@ $(function(){
                 data.f.push({
                     'y':(e.changedTouches[i].clientY / window.innerHeight).toFixed(2),
                     'x':(e.changedTouches[i].clientX / window.innerWidth).toFixed(2),
-                    'c':[ $("#color").spectrum("get").toRgb(),
-                               $("#color2").spectrum("get").toRgb()
+                    'c':[ randomColor(),
+                        randomColor()
                             ],
-                    'bang': $('#bang').val()/10
+                    'bang': 0.7
                 });
+
+                window.fireworks.push(new Firework(e.changedTouches[i].clientX, e.changedTouches[i].clientY, 7, randomColor()));
             }
             socket.emit('b', data);
         }, false);        

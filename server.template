@@ -1,7 +1,7 @@
 {
   "AWSTemplateFormatVersion" : "2010-09-09",
   
-  "Description" : "Pong template",
+  "Description" : "Fireworks template",
   
   "Parameters" : {
       
@@ -23,6 +23,7 @@
       "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
       "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x/x."
     },
+
     "bootstrapWebScript" : { "Type" : "String" , "Default": "https://gist.github.com/JamesLinnegarTW/8217634/raw/cfbc85943f8e3e90dc7097f5411c6611e0fd86a2/setup" }
   },
     
